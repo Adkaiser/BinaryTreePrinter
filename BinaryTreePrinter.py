@@ -23,7 +23,7 @@ def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None, file=None
 		sys.stdout = sys.__stdout__
 
 def printArrayTree(tree):
-	printArrayTreeVersioned(tree, 2)
+	printArrayTreeVersioned(tree, 3)
 	
 def printArrayTreeVersioned(tree, formattingversion):
 	#Find number of layers of tree, which equals log(base2) x
@@ -70,17 +70,20 @@ def printArrayTreeVersioned(tree, formattingversion):
 				layerString += " "* digits
 			#Otherwise print the number
 			else:
-				#Determine number formatting for this number, so that they all have the same length
-				parts = str(val).split(".")
-				#Decimal sign
-				if len(parts) > 1:
-					decdigits = len(parts[1])
-					formatstring = '{:0'+str(digits)+'.'+str(decdigits)+'f}'
-				#Pad with zeroes if there is only one space left open, as it can't be a decimal
+				if(formattingversion < 3):
+					#Determine number formatting for this number, so that they all have the same length
+					parts = str(val).split(".")
+					#Decimal sign
+					if len(parts) > 1:
+						decdigits = len(parts[1])
+						formatstring = '{:0'+str(digits)+'.'+str(decdigits)+'f}'
+					#Pad with zeroes if there is only one space left open, as it can't be a decimal
+					else:
+						formatstring = '{:0'+str(digits)+'d}'
+					#Print value
+					layerString += formatstring.format(val)
 				else:
-					formatstring = '{:0'+str(digits)+'d}'
-				#Print value
-				layerString += formatstring.format(val)
+					layerString += str(val).center(digits)
 				
 		print layerString
 			
