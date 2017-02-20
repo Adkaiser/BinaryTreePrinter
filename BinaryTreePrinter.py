@@ -8,6 +8,9 @@ def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None):
 	#If object-based, parse tree into array based on properties passed to function
 
 def printArrayTree(tree):
+	printArrayTreeVersioned(tree, 2)
+	
+def printArrayTreeVersioned(tree, formattingversion):
 	#Find number of layers of tree, which equals log(base2) x
 	layers = int(ceil(log(len(tree) + 1, 2)))
 	currentlayer = 0
@@ -60,22 +63,48 @@ def printArrayTree(tree):
 		print layerString
 			
 		#Print branches
-		indent -= numindent
+		#Calculate values needed to balance branches
+		if(formattingversion == 1):
+			indent -= numindent
+			branchdistance = branchspace-2
+			spacetonextbranch = spacing-(2-branchfactor(digits))
+			spacing = (spacing-digits)/2
+		
+		else:
+			#Updated formatting code
+			nextindent = findIndent(layers, currentlayer+1, digits, branchspace, numindent)
+			indentdiff = indent-nextindent+digits
+			indent = nextindent + (indentdiff / 2)
+			#Hack to fix indenting on final row as digits get large
+			if(currentlayer == layers-2):
+				indent += digits/5
+			
+			spacing = (spacing-digits)/2
+			freespacebetween = spacing - digits - 2
+			if freespacebetween > -2:
+				segment = int(floor(freespacebetween / 4.0))
+				branchdistance = segment * 2 + digits
+				spacetonextbranch = (spacing + (int(floor(freespacebetween / 2.0))) + digits*2 + branchfactor(digits)/digits)
+				if digits%2 == 0 and spacetonextbranch > spacing + digits*2:
+					spacetonextbranch += 1
+			else:
+				segment = 1
+				branchdistance = branchspace-2
+				spacetonextbranch = spacing + 2*digits
 
+		#Printing spaces and branch symbols
 		branchString = " " * indent
 		for i, val in enumerate(layerarray):
-			freespace = spacing - 2 - digits
-			segments = int(floor(freespace / 4))
 			if i != 0:
 				#Interval of blank space between nodes
-				branchString += " " * (spacing-(2-branchfactor(digits)))
+				branchString += " " * (spacetonextbranch)
 			if 2*(offset+i) + 1 < len(tree):
 				branchString += "/"
 			else:
 				break
 			if 2*(offset+i) + 2 < len(tree):
 				#Interval of blank space between branches for same node
-				branchString += " " * (branchspace-2)
+				branchString += " " * (branchdistance)
 				branchString += "\\"
 			else:
 				break
@@ -84,7 +113,6 @@ def printArrayTree(tree):
 		#Move to the next layer
 		offset += 2**currentlayer
 		currentlayer += 1
-		spacing = (spacing-digits)/2
 		
 def findIndent(layers, currentlayer, digits, branchspace, numindent):
 	if(currentlayer < layers-1):
@@ -92,4 +120,4 @@ def findIndent(layers, currentlayer, digits, branchspace, numindent):
 	return digits-1
 			
 
-printBinaryTree([1, 2, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
+printBinaryTree([10, 2.8, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
