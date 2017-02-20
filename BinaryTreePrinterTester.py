@@ -1,22 +1,37 @@
 from BinaryTreePrinter import printBinaryTree
 from BSTFactory import BSTFactory
 
+#Single digits
 printBinaryTree([1, 2, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
 print " "
 print " "
+#Decimals
 printBinaryTree([1, 2.8, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
 print " "
 print " "
-printBinaryTree([10, 2, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
+#Two digits
+printBinaryTree([10, 2, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4], file="test.txt")
 print " "
 print " "
+#Two digits and decimals
 printBinaryTree([10, 2.8, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
 print " "
 print " "
+#More than two digits
 printBinaryTree([100, 2, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
 print " "
 print " "
 printBinaryTree([1000, 2, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
+print " "
+print " "
+#Negatives
+printBinaryTree([-1, 2, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
+print " "
+print " "
+printBinaryTree([-1, 2.3, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
+print " "
+print " "
+printBinaryTree([-1.4, 2.3, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
 print " "
 print " "
 

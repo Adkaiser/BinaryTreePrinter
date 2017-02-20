@@ -1,7 +1,13 @@
 from math import log, ceil, floor
 from BinaryTreeParser import BinaryTreeParser, EMPTYNODESTRING
+import sys
 
-def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None):
+def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None, file=None):
+	#Check for an ouptut file
+	if file:
+		f = open(file, 'w+')
+		sys.stdout = f
+			
 	#If already an array, print array
 	if isinstance(tree, list):
 		printArrayTree(tree)
@@ -10,6 +16,11 @@ def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None):
 	else:
 		treearray = BinaryTreeParser(tree, valProp, leftProp, rightProp).parseTree()
 		printArrayTree(treearray)
+		
+	#Reset print to standard stdout
+	if file:
+		f.close()
+		sys.stdout = sys.__stdout__
 
 def printArrayTree(tree):
 	printArrayTreeVersioned(tree, 2)
