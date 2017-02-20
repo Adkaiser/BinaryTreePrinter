@@ -1,4 +1,5 @@
 from math import log, ceil, floor
+from BinaryTreeParser import BinaryTreeParser
 
 def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None):
 	#If already an array, print array
@@ -6,6 +7,9 @@ def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None):
 		printArrayTree(tree)
 		
 	#If object-based, parse tree into array based on properties passed to function
+	else:
+		treearray = BinaryTreeParser(tree, valProp, leftProp, rightProp)
+		printArrayTree(treearray)
 
 def printArrayTree(tree):
 	printArrayTreeVersioned(tree, 2)
