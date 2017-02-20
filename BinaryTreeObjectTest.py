@@ -1,4 +1,4 @@
-from BinaryTreeParser import BinaryTreeParser
+from BinaryTreeParser import BinaryTreeParser, EMPTYNODESTRING
 
 class BinaryNode:
 	def __init__(self, val):
@@ -27,8 +27,12 @@ root.getNode("left").setNode("left", 6)
 root.getNode("left").setNode("right", 8)
 root.getNode("right").setNode("left", 2)
 root.getNode("right").setNode("right", 9)
-
 parser = BinaryTreeParser(root, "value", "left", "right")
-
-
 assert parser.parseTree() == [1, 3, 15, 6, 8, 2, 9]
+
+root = BinaryNode(1)
+root.setNode("right", 15)
+root.getNode("right").setNode("left", 2)
+root.getNode("right").setNode("right", 9)
+parser = BinaryTreeParser(root, "value", "left", "right")
+assert parser.parseTree() == [1, EMPTYNODESTRING, 15, EMPTYNODESTRING, EMPTYNODESTRING, 2, 9]

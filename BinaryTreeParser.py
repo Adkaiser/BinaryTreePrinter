@@ -1,6 +1,11 @@
 from Queue import Queue
 
+#Placeholder for non-existant nodes.
+#Allows printing of unbalanced trees
+EMPTYNODESTRING = "pbugnonodevalue"
+
 class BinaryTreeParser:
+	
 	def __init__(self, root, val, left, right):
 		self.root = root
 		self.queue = Queue(0)
@@ -19,13 +24,23 @@ class BinaryTreeParser:
 		arraytree = []
 		#Start the queue
 		self.queue.put(self.root)
+		existantnodes = 1
 		#Parse the value of every node into the array, using Breadth-First Searching
-		while not self.queue.empty():
+		while existantnodes > 0:
 			node = self.queue.get()
 			arraytree.append(getattr(node, self.valproperty))
-			if getattr(node, self.leftproperty, False):
-				self.queue.put(getattr(node, self.leftproperty))
-			if getattr(node, self.rightproperty, False):
-				self.queue.put(getattr(node, self.rightproperty))
+			
+			if getattr(node, self.valproperty) != EMPTYNODESTRING:
+				existantnodes -= 1
+			
+			for prop in [self.leftproperty, self.rightproperty]:
+				if getattr(node, prop, False):
+					self.queue.put(getattr(node, prop))
+					existantnodes += 1
+				else:
+					emptnode = type("PBugTempTreeNode", (object,), {self.valproperty:EMPTYNODESTRING,
+						self.leftproperty: False,
+						self.rightproperty: False})()
+					self.queue.put(emptnode)
 		
 		return arraytree

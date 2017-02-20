@@ -1,5 +1,5 @@
 from math import log, ceil, floor
-from BinaryTreeParser import BinaryTreeParser
+from BinaryTreeParser import BinaryTreeParser, EMPTYNODESTRING
 
 def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None):
 	#If already an array, print array
@@ -8,7 +8,7 @@ def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None):
 		
 	#If object-based, parse tree into array based on properties passed to function
 	else:
-		treearray = BinaryTreeParser(tree, valProp, leftProp, rightProp)
+		treearray = BinaryTreeParser(tree, valProp, leftProp, rightProp).parseTree()
 		printArrayTree(treearray)
 
 def printArrayTree(tree):
@@ -20,7 +20,8 @@ def printArrayTreeVersioned(tree, formattingversion):
 	currentlayer = 0
 	offset = 0
 	#Find the largest number that we'll have to deal with
-	largest = max(map(lambda x: str(x), tree), key=len)
+	numbers = filter(lambda x: x != EMPTYNODESTRING, tree)
+	largest = max(map(lambda x: str(x), numbers), key=len)
 	digits = len(str(largest))
 	
 	#Adjust formatting based on digit length.
@@ -53,17 +54,23 @@ def printArrayTreeVersioned(tree, formattingversion):
 			if i != 0:
 				layerString += " " * spacing
 				
-			#Determine number formatting for this number, so that they all have the same length
-			parts = str(val).split(".")
-			#Decimal sign
-			if len(parts) > 1:
-				decdigits = len(parts[1])
-				formatstring = '{:0'+str(digits)+'.'+str(decdigits)+'f}'
-			#Pad with zeroes if there is only one space left open, as it can't be a decimal
+			#Check if node is a placeholder, and only print a blankspace if it is.
+			if str(val) == EMPTYNODESTRING:
+				layerString += " "* digits
+			#Otherwise print the number
 			else:
-				formatstring = '{:0'+str(digits)+'d}'
-			#Print value
-			layerString += formatstring.format(val)
+				#Determine number formatting for this number, so that they all have the same length
+				parts = str(val).split(".")
+				#Decimal sign
+				if len(parts) > 1:
+					decdigits = len(parts[1])
+					formatstring = '{:0'+str(digits)+'.'+str(decdigits)+'f}'
+				#Pad with zeroes if there is only one space left open, as it can't be a decimal
+				else:
+					formatstring = '{:0'+str(digits)+'d}'
+				#Print value
+				layerString += formatstring.format(val)
+				
 		print layerString
 			
 		#Print branches
@@ -103,13 +110,20 @@ def printArrayTreeVersioned(tree, formattingversion):
 				#Interval of blank space between nodes
 				branchString += " " * (spacetonextbranch)
 			if 2*(offset+i) + 1 < len(tree):
-				branchString += "/"
+				#Don't print branches for placeholder nodes
+				if tree[2*(offset+i) + 1] == EMPTYNODESTRING:
+					branchString += " "
+				else:
+					branchString += "/"
 			else:
 				break
 			if 2*(offset+i) + 2 < len(tree):
 				#Interval of blank space between branches for same node
 				branchString += " " * (branchdistance)
-				branchString += "\\"
+				if tree[2*(offset+i) + 2] == EMPTYNODESTRING:
+					branchString += " "
+				else:
+					branchString += "\\"
 			else:
 				break
 		print branchString
@@ -122,6 +136,3 @@ def findIndent(layers, currentlayer, digits, branchspace, numindent):
 	if(currentlayer < layers-1):
 		return (2**(layers-currentlayer-2)) * (digits + branchspace) - numindent - 1
 	return digits-1
-			
-
-printBinaryTree([10, 2.8, 1, 3, 5, 6, 7, 8, 9, 1, 1, 1, 2, 3, 4])
