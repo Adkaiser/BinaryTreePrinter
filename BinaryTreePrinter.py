@@ -23,9 +23,9 @@ def printBinaryTree(tree, valProp=None, leftProp=None, rightProp=None, file=None
 		sys.stdout = sys.__stdout__
 
 def printArrayTree(tree):
-	printArrayTreeVersioned(tree, 3)
+	printArrayTreeVersioned(tree, 2, 2)
 	
-def printArrayTreeVersioned(tree, formattingversion):
+def printArrayTreeVersioned(tree, spacingversion, textformattingversion):
 	#Find number of layers of tree, which equals log(base2) x
 	layers = int(ceil(log(len(tree) + 1, 2)))
 	currentlayer = 0
@@ -70,7 +70,7 @@ def printArrayTreeVersioned(tree, formattingversion):
 				layerString += " "* digits
 			#Otherwise print the number
 			else:
-				if(formattingversion < 3):
+				if(textformattingversion == 1):
 					#Determine number formatting for this number, so that they all have the same length
 					parts = str(val).split(".")
 					#Decimal sign
@@ -89,7 +89,7 @@ def printArrayTreeVersioned(tree, formattingversion):
 			
 		#Print branches
 		#Calculate values needed to balance branches
-		if(formattingversion == 1):
+		if(spacingversion == 1):
 			indent -= numindent
 			branchdistance = branchspace-2
 			spacetonextbranch = spacing-(2-branchfactor(digits))
