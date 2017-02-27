@@ -1,4 +1,5 @@
 from Queue import Queue
+from BinaryTreeImporter import parseFromString
 
 #Placeholder for non-existant nodes.
 #Allows printing of unbalanced trees
@@ -17,6 +18,11 @@ class BinaryTreeParser:
 		#Ensure properties defined for BT node object are present
 		if not self.valproperty or not self.leftproperty or not self.rightproperty:
 			raise ValueError("Properties of binary node object are not defined.")
+			
+		#If root is a string, assume it's a file that must be parsed into an object tree
+		if isinstance(self.root, basestring):
+			self.root = parseFromString(self.root, self.valproperty, self.leftproperty, self.rightproperty)
+			
 		for key, prop in dict.iteritems({"node value": self.valproperty, "left node": self.leftproperty, "right node": self.rightproperty}):
 			if not hasattr(self.root, prop):
 				raise  ValueError("Binary tree node object doesn't contain the specified property for the " + key + ". Given property name: "+prop)

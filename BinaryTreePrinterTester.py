@@ -53,3 +53,7 @@ print " "
 printBinaryTree(tree.getRoot(), "value", "left", "right", file="bsttest.txt")
 print " "
 print " "
+
+printBinaryTree("jsontest1.json", "value", "left", "right")
+print " "
+print " "
